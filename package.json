@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "JS Marathon Pro Edition | RPG Game",
   "scripts": {
-    "build:dev": "rm -rf dist && env NODE_ENV=development webpack",
-    "build:prod": "rm -rf build && env NODE_ENV=production webpack",
+    "build:dev": "rm -rf dist && cross-env NODE_ENV=development webpack",
+    "build:prod": "rm -rf build && cross-env NODE_ENV=production webpack",
     "start": "webpack server",
     "prettier": "prettier --write .",
     "lint": "npx eslint src/**/*.js",
@@ -26,12 +26,14 @@
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "babel-loader": "^8.2.2",
+    "cross-env": "^7.0.3",
     "css-loader": "^5.2.6",
     "eslint": "^7.29.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.4",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.3.2",
+    "husky": "^6.0.0",
     "prettier": "^2.3.2",
     "prettier-quick": "^0.0.5",
     "sass": "^1.35.1",
@@ -39,7 +41,6 @@
     "style-loader": "^3.0.0",
     "webpack": "^5.41.0",
     "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^3.11.2",
-    "husky": "^6.0.0"
+    "webpack-dev-server": "^3.11.2"
   }
 }
