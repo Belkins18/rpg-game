@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "JS Marathon Pro Edition | RPG Game",
   "scripts": {
+    "build:dev": "rm -rf dist && env NODE_ENV=development webpack",
+    "build:prod": "rm -rf build && env NODE_ENV=production webpack",
     "start": "webpack server",
     "prettier": "prettier --write .",
     "lint": "npx eslint src/**/*.js",

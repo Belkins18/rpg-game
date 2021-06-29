@@ -1,19 +1,25 @@
-const { resolve } = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { resolve } = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const { NODE_ENV } = process.env;
+
+console.log('NODE_ENV: ', NODE_ENV);
 
 const PATHS = {
-  entry: resolve(__dirname, "src/index.js"),
-  output: resolve(__dirname, "dist"),
+  entry: resolve(__dirname, 'src/index.js'),
+  output: NODE_ENV === 'production'
+    ? resolve(__dirname, 'build')
+    : resolve(__dirname, 'dist'),
 };
 
 module.exports = {
-  mode: "development",
+  mode: NODE_ENV || 'development',
   entry: PATHS.entry,
   output: {
-    filename: "main.js",
+    filename: 'main.js',
     path: PATHS.output,
   },
-  watch: true,
+  watch: NODE_ENV === 'development',
   watchOptions: {
     ignored: /node_modules/,
     poll: 1000,
@@ -22,16 +28,16 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         exclude: /node_modules/,
       },
       {
         test: /\.scss$/,
         use: [
-            'style-loader',
-            'css-loader',
-            'sass-loader'
-        ]
+          'style-loader',
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
         test: [/\.svg$/, /\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
@@ -41,15 +47,15 @@ module.exports = {
             options: {
               name: '[name].[ext]',
               outputPath: 'assets/',
-            }
-          }
-        ]
-      }
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: resolve(__dirname, "public/index.html"),
+      template: resolve(__dirname, 'public/index.html'),
     }),
   ],
   devServer: {
@@ -59,4 +65,5 @@ module.exports = {
     hot: true,
     historyApiFallback: true,
   },
+  devtool: NODE_ENV === 'development' ? 'source-map' : false,
 };
