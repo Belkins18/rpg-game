@@ -5,7 +5,7 @@
   "scripts": {
     "build:dev": "rm -rf dist && cross-env NODE_ENV=development webpack",
     "build:prod": "rm -rf build && cross-env NODE_ENV=production webpack",
-    "start": "webpack server",
+    "start": "cross-env NODE_ENV=production node scripts/start.js",
     "prettier": "prettier --write .",
     "lint": "npx eslint src/**/*.js",
     "prepare": "husky install"
