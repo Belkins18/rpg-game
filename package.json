@@ -9,6 +9,7 @@
     "lint": "npx eslint src/**/*.js",
     "prepare": "husky install",
     "start": "env NODE_ENV=production node scripts/start.js",
+    "build": "env NODE_ENV=production webpack",
     "heroku:logs": "heroku logs --tail --app=js-pro-marathon"
   },
   "repository": {
