@@ -12,8 +12,8 @@ const spriteH = 48;
 const shots = 3;
 let cycle = 0;
 let heroDirection = 0;
-let pY = 0;
-let pX = 0;
+let pY = 270;
+let pX = 270;
 
 // eslint-disable-next-line no-unused-vars
 let upPresed = false;
@@ -74,45 +74,37 @@ img.addEventListener('load', () => {
       heroDirection = hero.direction.up;
       pY -= 10;
       cycle = (cycle + 1) % shots;
-      console.log(
-        {
-          pX,
-          pY,
-        },
-      );
+      console.log({
+        pX,
+        pY,
+      });
     }
     if (bottomPresed && pY < 550) {
       heroDirection = hero.direction.down;
       pY += 10;
       cycle = (cycle + 1) % shots;
-      console.log(
-        {
-          pX,
-          pY,
-        },
-      );
+      console.log({
+        pX,
+        pY,
+      });
     }
     if (leftPresed && pX > 0) {
       heroDirection = hero.direction.left;
       pX -= 10;
       cycle = (cycle + 1) % shots;
-      console.log(
-        {
-          pX,
-          pY,
-        },
-      );
+      console.log({
+        pX,
+        pY,
+      });
     }
     if (rightPresed && pX < 550) {
       heroDirection = hero.direction.right;
       pX += 10;
       cycle = (cycle + 1) % shots;
-      console.log(
-        {
-          pX,
-          pY,
-        },
-      );
+      console.log({
+        pX,
+        pY,
+      });
     }
 
     ctx.clearRect(0, 0, 600, 600);
