@@ -70,25 +70,49 @@ img.src = SenseiWalk;
 
 img.addEventListener('load', () => {
   setInterval(() => {
-    if (upPresed) {
+    if (upPresed && pY > 0) {
       heroDirection = hero.direction.up;
       pY -= 10;
       cycle = (cycle + 1) % shots;
+      console.log(
+        {
+          pX,
+          pY,
+        },
+      );
     }
-    if (bottomPresed) {
+    if (bottomPresed && pY < 550) {
       heroDirection = hero.direction.down;
       pY += 10;
       cycle = (cycle + 1) % shots;
+      console.log(
+        {
+          pX,
+          pY,
+        },
+      );
     }
-    if (leftPresed) {
+    if (leftPresed && pX > 0) {
       heroDirection = hero.direction.left;
       pX -= 10;
       cycle = (cycle + 1) % shots;
+      console.log(
+        {
+          pX,
+          pY,
+        },
+      );
     }
-    if (rightPresed) {
+    if (rightPresed && pX < 550) {
       heroDirection = hero.direction.right;
       pX += 10;
       cycle = (cycle + 1) % shots;
+      console.log(
+        {
+          pX,
+          pY,
+        },
+      );
     }
 
     ctx.clearRect(0, 0, 600, 600);
