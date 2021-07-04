@@ -11,24 +11,48 @@ const spriteW = 48;
 const spriteH = 48;
 const shots = 3;
 let cycle = 0;
+let heroDirection = 0;
 let pY = 0;
+let pX = 0;
 
 // eslint-disable-next-line no-unused-vars
+let upPresed = false;
 let bottomPresed = false;
+let leftPresed = false;
+let rightPresed = false;
 
 function keyDownHandler(e) {
+  if (e.key === 'Up' || e.key === 'ArrowUp') {
+    upPresed = true;
+  }
   if (e.key === 'Down' || e.key === 'ArrowDown') {
     bottomPresed = true;
+  }
+  if (e.key === 'Left' || e.key === 'ArrowLeft') {
+    leftPresed = true;
+  }
+  if (e.key === 'Right' || e.key === 'ArrowRight') {
+    rightPresed = true;
   }
 }
 
 function keyUpHandler(e) {
+  if (e.key === 'Up' || e.key === 'ArrowUp') {
+    upPresed = false;
+  }
   if (e.key === 'Down' || e.key === 'ArrowDown') {
     bottomPresed = false;
+  }
+  if (e.key === 'Left' || e.key === 'ArrowLeft') {
+    leftPresed = false;
+  }
+  if (e.key === 'Right' || e.key === 'ArrowRight') {
+    rightPresed = false;
   }
 }
 
 document.addEventListener('keydown', keyDownHandler);
+document.addEventListener('keyr', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
 
 // eslint-disable-next-line no-unused-vars
@@ -46,12 +70,28 @@ img.src = SenseiWalk;
 
 img.addEventListener('load', () => {
   setInterval(() => {
+    if (upPresed) {
+      heroDirection = hero.direction.up;
+      pY -= 10;
+      cycle = (cycle + 1) % shots;
+    }
     if (bottomPresed) {
+      heroDirection = hero.direction.down;
       pY += 10;
+      cycle = (cycle + 1) % shots;
+    }
+    if (leftPresed) {
+      heroDirection = hero.direction.left;
+      pX -= 10;
+      cycle = (cycle + 1) % shots;
+    }
+    if (rightPresed) {
+      heroDirection = hero.direction.right;
+      pX += 10;
       cycle = (cycle + 1) % shots;
     }
 
     ctx.clearRect(0, 0, 600, 600);
-    ctx.drawImage(img, cycle * spriteW, 0, spriteW, spriteH, 0, pY, 48, 48);
+    ctx.drawImage(img, cycle * spriteW, heroDirection, spriteW, spriteH, pX, pY, 48, 48);
   }, 120);
 });
