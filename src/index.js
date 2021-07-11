@@ -37,8 +37,6 @@ console.log('####: INIT :####');
 const canvas = document.getElementById(CANVAS_ID);
 const ctx = canvas.getContext('2d');
 
-
-
 let cycle = 0;
 let direction = 0;
 let pY = (GAME_STATIC_PROPS.canvasH - GAME_STATIC_PROPS.spriteH) / 2;
@@ -96,33 +94,38 @@ document.addEventListener('keyup', keyUpHandler);
 const img = document.createElement('img');
 img.src = SenseiWalk;
 
-img.addEventListener('load', () => {
+function walk(timestamp) {
+  console.log('### timestamp: ', timestamp);
   const { UP, DOWN, LEFT, RIGHT } = KEYBOARD_ACTIONS;
   const { canvasW, canvasH, spriteW, spriteH, shots } = GAME_STATIC_PROPS;
 
-  setInterval(() => {
-    if (UP.IS_PRESSED && pY > 0) {
-      direction = UP.HERO_SPRITES_POSITION;
-      pY -= 10;
-      cycle = (cycle + 1) % shots;
-    }
-    if (DOWN.IS_PRESSED && pY < 550) {
-      direction = DOWN.HERO_SPRITES_POSITION;
-      pY += 10;
-      cycle = (cycle + 1) % shots;
-    }
-    if (LEFT.IS_PRESSED && pX > 0) {
-      direction = LEFT.HERO_SPRITES_POSITION;
-      pX -= 10;
-      cycle = (cycle + 1) % shots;
-    }
-    if (RIGHT.IS_PRESSED && pX < 550) {
-      direction = RIGHT.HERO_SPRITES_POSITION;
-      pX += 10;
-      cycle = (cycle + 1) % shots;
-    }
+  if (UP.IS_PRESSED && pY > 0) {
+    direction = UP.HERO_SPRITES_POSITION;
+    pY -= 10;
+    cycle = (cycle + 1) % shots;
+  }
+  if (DOWN.IS_PRESSED && pY < 550) {
+    direction = DOWN.HERO_SPRITES_POSITION;
+    pY += 10;
+    cycle = (cycle + 1) % shots;
+  }
+  if (LEFT.IS_PRESSED && pX > 0) {
+    direction = LEFT.HERO_SPRITES_POSITION;
+    pX -= 10;
+    cycle = (cycle + 1) % shots;
+  }
+  if (RIGHT.IS_PRESSED && pX < 550) {
+    direction = RIGHT.HERO_SPRITES_POSITION;
+    pX += 10;
+    cycle = (cycle + 1) % shots;
+  }
 
-    ctx.clearRect(0, 0, canvasW, canvasH);
-    ctx.drawImage(img, cycle * spriteW, direction, spriteW, spriteH, pX, pY, 48, 48);
-  }, 120);
+  ctx.clearRect(0, 0, canvasW, canvasH);
+  ctx.drawImage(img, cycle * spriteW, direction, spriteW, spriteH, pX, pY, 48, 48);
+
+  requestAnimationFrame(walk);
+}
+
+img.addEventListener('load', () => {
+  requestAnimationFrame(walk);
 });
