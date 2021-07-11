@@ -1,4 +1,5 @@
 import ClienEngine from './ClienEngine';
+import sprites from '../configs/sprites';
 
 export default class ClientGame {
   /**
@@ -23,6 +24,9 @@ export default class ClientGame {
   }
 
   initEngine() {
-    this.engine.start();
+    this.engine.loadSprites(sprites).then(() => {
+      console.log('#### engine: ', this.engine);
+      this.engine.start();
+    });
   }
 }
