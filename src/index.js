@@ -1,5 +1,8 @@
 import './index.scss';
 import SenseiWalk from './assets/heroes/Male-3-Walk.png';
+import TerrainAtlas from './assets/terrain.png';
+import worldConfig from './configs/world.json';
+import sprites from './configs/sprites';
 
 const CANVAS_ID = 'game';
 const GAME_STATIC_PROPS = {
@@ -33,7 +36,6 @@ const KEYBOARD_ACTIONS = {
   },
 };
 
-console.log('####: INIT :####');
 const canvas = document.getElementById(CANVAS_ID);
 const ctx = canvas.getContext('2d');
 
@@ -94,8 +96,8 @@ document.addEventListener('keyup', keyUpHandler);
 const img = document.createElement('img');
 img.src = SenseiWalk;
 
+// eslint-disable-next-line no-unused-vars
 function walk(timestamp) {
-  console.log('### timestamp: ', timestamp);
   const { UP, DOWN, LEFT, RIGHT } = KEYBOARD_ACTIONS;
   const { canvasW, canvasH, spriteW, spriteH, shots } = GAME_STATIC_PROPS;
 
@@ -121,11 +123,27 @@ function walk(timestamp) {
   }
 
   ctx.clearRect(0, 0, canvasW, canvasH);
-  ctx.drawImage(img, cycle * spriteW, direction, spriteW, spriteH, pX, pY, 48, 48);
+  ctx.drawImage(img, cycle * spriteW, direction, spriteW, spriteH, pX, pY, spriteW, spriteH);
 
   requestAnimationFrame(walk);
 }
 
 img.addEventListener('load', () => {
-  requestAnimationFrame(walk);
+  // requestAnimationFrame(walk);
+});
+
+const terrain = document.createElement('img');
+terrain.src = TerrainAtlas;
+
+terrain.addEventListener('load', () => {
+  const { map } = worldConfig;
+  const { spriteW, spriteH } = GAME_STATIC_PROPS;
+
+  map.forEach((cfgRow, y) => {
+    cfgRow.forEach((cfgCell, x) => {
+      const [sX, sY, sW, sH] = sprites.terrain[cfgCell[0]].frames[0];
+
+      ctx.drawImage(terrain, sX, sY, sW, sH, x * spriteW, y * spriteH, spriteW, spriteH);
+    });
+  });
 });
