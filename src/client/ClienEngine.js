@@ -1,4 +1,6 @@
-export default class ClienEngine {
+import EventSourceMixin from '../common/EventSourceMixin';
+
+class ClienEngine {
   constructor(canvas) {
     console.log(canvas);
 
@@ -24,6 +26,7 @@ export default class ClienEngine {
     ctx.fillStyle = 'black';
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    this.trigger('render', timestamp);
     this.initNextFrame();
   }
 
@@ -64,3 +67,7 @@ export default class ClienEngine {
     });
   }
 }
+
+Object.assign(ClienEngine.prototype, EventSourceMixin);
+
+export default ClienEngine;

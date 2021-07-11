@@ -9,6 +9,7 @@ export default class ClientGame {
   constructor(config) {
     this.config = config;
     this.engine = this.createEngine();
+    console.log('#### this.engine: ', this.engine);
     this.initEngine();
   }
 
@@ -25,7 +26,9 @@ export default class ClientGame {
 
   initEngine() {
     this.engine.loadSprites(sprites).then(() => {
-      console.log('#### engine: ', this.engine);
+      this.engine.on('render', (_, time) => {
+        console.log('#### render', time);
+      });
       this.engine.start();
     });
   }
