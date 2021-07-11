@@ -2,11 +2,19 @@ import './index.scss';
 import SenseiWalk from './assets/heroes/Male-3-Walk.png';
 
 const CANVAS_ID = 'game';
+const GAME_STATIC_PROPS = {
+  canvasW: 600,
+  canvasH: 600,
+  spriteW: 48,
+  spriteH: 48,
+  shots: 3,
+};
+
 const KEYBOARD_ACTIONS = {
   UP: {
     KEY: 'ArrowUp',
     IS_PRESSED: false,
-    HERO_SPRITES_POSITION: 144,
+    HERO_SPRITES_POSITION: GAME_STATIC_PROPS.spriteH * 3,
   },
   DOWN: {
     KEY: 'ArrowDown',
@@ -16,12 +24,12 @@ const KEYBOARD_ACTIONS = {
   LEFT: {
     KEY: 'ArrowLeft',
     IS_PRESSED: false,
-    HERO_SPRITES_POSITION: 48,
+    HERO_SPRITES_POSITION: GAME_STATIC_PROPS.spriteW * 1,
   },
   RIGHT: {
     KEY: 'ArrowRight',
     IS_PRESSED: false,
-    HERO_SPRITES_POSITION: 96,
+    HERO_SPRITES_POSITION: GAME_STATIC_PROPS.spriteW * 2,
   },
 };
 
@@ -29,16 +37,12 @@ console.log('####: INIT :####');
 const canvas = document.getElementById(CANVAS_ID);
 const ctx = canvas.getContext('2d');
 
-const GAME_STATIC_PROPS = {
-  spriteW: 48,
-  spriteH: 48,
-  shots: 3,
-};
+
 
 let cycle = 0;
 let direction = 0;
-let pY = 270;
-let pX = 270;
+let pY = (GAME_STATIC_PROPS.canvasH - GAME_STATIC_PROPS.spriteH) / 2;
+let pX = (GAME_STATIC_PROPS.canvasW - GAME_STATIC_PROPS.spriteW) / 2;
 
 function keyDownHandler(e) {
   const { UP, DOWN, LEFT, RIGHT } = KEYBOARD_ACTIONS;
@@ -94,7 +98,7 @@ img.src = SenseiWalk;
 
 img.addEventListener('load', () => {
   const { UP, DOWN, LEFT, RIGHT } = KEYBOARD_ACTIONS;
-  const { spriteW, spriteH, shots } = GAME_STATIC_PROPS;
+  const { canvasW, canvasH, spriteW, spriteH, shots } = GAME_STATIC_PROPS;
 
   setInterval(() => {
     if (UP.IS_PRESSED && pY > 0) {
@@ -118,7 +122,7 @@ img.addEventListener('load', () => {
       cycle = (cycle + 1) % shots;
     }
 
-    ctx.clearRect(0, 0, 600, 600);
+    ctx.clearRect(0, 0, canvasW, canvasH);
     ctx.drawImage(img, cycle * spriteW, direction, spriteW, spriteH, pX, pY, 48, 48);
   }, 120);
 });
