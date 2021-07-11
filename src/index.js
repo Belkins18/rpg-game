@@ -3,6 +3,7 @@ import SenseiWalk from './assets/heroes/Male-3-Walk.png';
 import TerrainAtlas from './assets/terrain.png';
 import worldConfig from './configs/world.json';
 import sprites from './configs/sprites';
+import ClientGame from './client/ClientGame';
 
 const CANVAS_ID = 'game';
 const GAME_STATIC_PROPS = {
@@ -147,3 +148,25 @@ terrain.addEventListener('load', () => {
     });
   });
 });
+
+/* ==============
+====================      LOAD      =====================
+======================================================== */
+window.addEventListener('load', () => {
+  ClientGame.init({ tagId: 'game' });
+});
+
+/*= =============
+====================      READY      =====================
+======================================================== */
+document.addEventListener('DOMContentLoaded', () => {});
+
+/*= =============
+====================      SCROLL      ====================
+======================================================== */
+window.addEventListener('scroll', () => {});
+
+/*= =============
+====================      RESIZE      ====================
+======================================================== */
+window.addEventListener('resize', () => {});
