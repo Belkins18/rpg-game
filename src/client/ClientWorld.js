@@ -1,9 +1,13 @@
+/**
+ * @class ClientWorld
+ */
 export default class ClientWorld {
   /**
-   * @param payload Configuration ClientWorld.
-   * @param payload.game ClientGame
-   * @param payload.engine ClientEngine
-   * @param payload.levelConfig world.json
+   * @constructor
+   * @param {Object} payload
+   * @param {ClientGame} payload.game
+   * @param {ClientEngine} payload.engine
+   * @param {...levelConfig} payload.levelConfig
    */
   constructor({ game, engine, levelConfig }) {
     Object.assign(this, {
@@ -24,7 +28,7 @@ export default class ClientWorld {
           sprite: ['terrain', i[0][0]],
           frame: 0,
           x: (indexX * this.engine.canvas.width) / this.levelConfig.camera.width,
-          y: (indexY * this.engine.canvas.height) / this.levelConfig.camera.height,
+          y: (indexY * this.engine.canvas.height) / this.levelConfig.camera.width,
           w: this.engine.canvas.width / this.levelConfig.camera.width,
           h: this.engine.canvas.height / this.levelConfig.camera.height,
         });
@@ -32,3 +36,18 @@ export default class ClientWorld {
     });
   }
 }
+
+/**
+ * @typedef {Object} levelConfig
+ * @property {Array} layers
+ * @property {levelConfig~camera} camera
+ * @property {Array} map
+ */
+
+/**
+ * @typedef {Object} levelConfig~camera
+ * @property {number} width
+ * @property {number} height
+ * @property {number} x
+ * @property {number} y
+ */
