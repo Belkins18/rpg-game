@@ -40,9 +40,7 @@ export default class ClientWorld extends PositionedObject {
    * @return {void}
    */
   init() {
-    const {
-      levelConfig, map, worldHeight, worldWidth,
-    } = this;
+    const { levelConfig, map, worldHeight, worldWidth } = this;
 
     for (let row = 0; row < worldHeight; row++) {
       for (let col = 0; col < worldWidth; col++) {
