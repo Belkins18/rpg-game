@@ -43,7 +43,7 @@ export default class ClientGame {
 
   /**
    * initEngine
-   * @return {void}
+   * @return {void | Error}
    */
   initEngine() {
     if (this.engine instanceof ClientEngine) {
@@ -55,6 +55,8 @@ export default class ClientGame {
         });
         this.engine.start();
       });
+    } else {
+      throw new Error(this.engine);
     }
   }
 
