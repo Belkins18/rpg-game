@@ -12,8 +12,6 @@ class PositionedObject {
    * @param {ClientEngine} config.engine
    */
   constructor(config) {
-    console.log('PositionedObjectConstructor: ', config);
-
     Object.assign(
       this,
       {

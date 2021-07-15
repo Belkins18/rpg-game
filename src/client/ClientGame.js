@@ -16,6 +16,7 @@ export default class ClientGame {
   constructor(config) {
     this.config = config;
     this.gameObjects = gameObjects;
+    this.player = null;
     this.engine = this.createEngine();
     this.world = this.createWorld();
     this.initEngine();
@@ -80,5 +81,13 @@ export default class ClientGame {
    */
   static getCanvasElement(tagId) {
     return document.getElementById(tagId);
+  }
+
+  /**
+   * setPlater
+   * @return {HTMLCanvasElement}
+   */
+  setPlayer(player) {
+    this.player = player;
   }
 }

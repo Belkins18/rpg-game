@@ -47,7 +47,7 @@ export default class ClientWorld extends PositionedObject {
         if (!map[row]) {
           map[row] = [];
         }
-        console.log('levelConfig.map[row][col]: ', levelConfig.map[row][col]);
+        // console.log('levelConfig.map[row][col]: ', levelConfig.map[row][col]);
         map[row][col] = new ClientCell({
           world: this,
           cellCol: col,

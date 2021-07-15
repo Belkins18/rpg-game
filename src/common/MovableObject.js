@@ -12,7 +12,6 @@ class MovableObject extends PositionedObject {
    * @param {ClientEngine} config.engine
    */
   constructor(config) {
-    console.log('MovableObjectConstructor: ', config);
     super(config);
 
     Object.assign(
