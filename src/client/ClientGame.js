@@ -2,7 +2,8 @@ import ClientEngine from './ClientEngine';
 import ClientWorld from './ClientWorld';
 import sprites from '../configs/sprites';
 // eslint-disable-next-line import/extensions
-import levelConfig from '../configs/world.js';
+import levelConfig from '../configs/world';
+import gameObjects from '../configs/gameObjects';
 
 /**
  * @class
@@ -14,6 +15,7 @@ export default class ClientGame {
    */
   constructor(config) {
     this.config = config;
+    this.gameObjects = gameObjects;
     this.engine = this.createEngine();
     this.world = this.createWorld();
     this.initEngine();
