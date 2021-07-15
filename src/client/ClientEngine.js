@@ -2,6 +2,7 @@ import EventSourceMixin from '../common/EventSourceMixin';
 import ClientCamera from './ClientCamera';
 // eslint-disable-next-line no-unused-vars
 import sprites from '../configs/sprites';
+import ClientInput from './ClientInput';
 
 /**
  * @class ClientEngine
@@ -19,6 +20,7 @@ class ClientEngine {
       sprites: {},
       images: {},
       camera: new ClientCamera({ canvas, engine: this }),
+      input: new ClientInput(canvas),
     });
 
     this.ctx = canvas.getContext('2d');

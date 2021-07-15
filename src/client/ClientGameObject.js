@@ -10,15 +10,11 @@ class ClientGameObject extends MovableObject {
     console.log('config: ', config);
     super();
 
-    const {
-      x, y, width, height,
-    } = config.cell;
+    const { x, y, width, height } = config.cell;
 
     const { world } = config.cell;
     const gameObjs = world.game.gameObjects;
-    const objCfg = typeof config.objCfg === 'string'
-      ? { type: config.objCfg }
-      : config.objCfg;
+    const objCfg = typeof config.objCfg === 'string' ? { type: config.objCfg } : config.objCfg;
 
     if (objCfg.player) {
       world.game.setPlayer(this);
@@ -59,9 +55,7 @@ class ClientGameObject extends MovableObject {
       this.cell = newCell;
       newCell.addGameObject(this);
 
-      const {
-        x, y, width, height,
-      } = newCell;
+      const { x, y, width, height } = newCell;
       Object.assign(this, {
         x,
         y,
@@ -74,9 +68,7 @@ class ClientGameObject extends MovableObject {
   render(time) {
     super.render(time);
 
-    const {
-      x, y, width, height, world,
-    } = this;
+    const { x, y, width, height, world } = this;
     const { engine } = world;
 
     const { sprite, frame, states } = this.spriteCfg;

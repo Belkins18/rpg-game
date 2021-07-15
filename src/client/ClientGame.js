@@ -57,10 +57,24 @@ export default class ClientGame {
           this.world.render(time);
         });
         this.engine.start();
+        this.initKeys();
       });
     } else {
       throw new Error(this.engine);
     }
+  }
+
+  initKeys() {
+    this.engine.input.onKey({
+      ArrowLeft: (keydown) => {
+        if (keydown) {
+          this.player.moveByCellCoord(-1, 0, (cell) => {
+            console.log('cell: ', cell);
+            return cell.findObjectsByType('grass').length;
+          });
+        }
+      },
+    });
   }
 
   /**
