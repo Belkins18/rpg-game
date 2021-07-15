@@ -51,9 +51,9 @@ export default class ClientGame {
     if (this.engine instanceof ClientEngine) {
       this.engine.loadSprites(sprites).then(() => {
         // eslint-disable-next-line no-unused-vars
+        this.world.init();
         this.engine.on('render', (_, time) => {
-          // console.log('#### sprites', sprites);
-          this.world.init();
+          this.world.render(time);
         });
         this.engine.start();
       });

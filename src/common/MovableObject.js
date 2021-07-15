@@ -1,9 +1,19 @@
 import { clamp } from './util';
 import PositionedObject from './PositionedObject';
 
+/**
+ * @class MovableObject
+ */
 class MovableObject extends PositionedObject {
-  constructor(cfg) {
-    super(cfg);
+  /**
+   * @constructor
+   * @param {Object} config
+   * @param {HTMLCanvasElement} config.canvas
+   * @param {ClientEngine} config.engine
+   */
+  constructor(config) {
+    console.log('MovableObjectConstructor: ', config);
+    super(config);
 
     Object.assign(
       this,
@@ -20,7 +30,7 @@ class MovableObject extends PositionedObject {
 
         clampToMap: true, // по умолчанию объект не должен вылетать за пределы карты
       },
-      cfg,
+      config,
     );
   }
 

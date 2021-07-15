@@ -1,18 +1,29 @@
 /* eslint-disable camelcase,max-len */
 import EventSourceMixin from './EventSourceMixin';
 
+/**
+ * @class PositionedObject
+ */
 class PositionedObject {
-  constructor(cfg) {
+  /**
+   * @constructor
+   * @param {Object} config
+   * @param {HTMLCanvasElement} config.canvas
+   * @param {ClientEngine} config.engine
+   */
+  constructor(config) {
+    console.log('PositionedObjectConstructor: ', config);
+
     Object.assign(
       this,
       {
-        cfg,
+        config,
         x: 0,
         y: 0,
         width: 0,
         height: 0,
       },
-      cfg,
+      config,
     );
   }
 
