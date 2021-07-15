@@ -1,7 +1,9 @@
 /**
  * @class ClientWorld
  */
-export default class ClientWorld {
+import PositionedObject from '../common/PositionedObject';
+
+export default class ClientWorld extends PositionedObject {
   /**
    * @constructor
    * @param {Object} payload
@@ -10,12 +12,23 @@ export default class ClientWorld {
    * @param {...levelConfig} payload.levelConfig
    */
   constructor({ game, engine, levelConfig }) {
+    super();
+
+    const worldHeight = levelConfig.map.length;
+    const worldWidth = levelConfig.map[0].length;
+    const cellSize = engine.canvas.height / levelConfig.camera.height;
+
     Object.assign(this, {
       game,
       engine,
       levelConfig,
-      height: levelConfig.map.length,
-      width: levelConfig.map[0].length,
+      height: worldHeight * cellSize,
+      width: worldWidth * cellSize,
+      worldHeight,
+      worldWidth,
+      cellHeight: cellSize,
+      cellWidth: cellSize,
+      map: [],
     });
   }
 
