@@ -65,28 +65,40 @@ export default class ClientGame {
   }
 
   initKeys() {
-    this.engine.input.onKey({
-      ArrowUp: (keydown) => {
-        if (keydown) {
-          this.player.moveByCellCoord(0, -1, (cell) => cell.findObjectsByType('grass').length);
-        }
-      },
-      ArrowDown: (keydown) => {
-        if (keydown) {
-          this.player.moveByCellCoord(0, 1, (cell) => cell.findObjectsByType('grass').length);
-        }
-      },
-      ArrowLeft: (keydown) => {
-        if (keydown) {
-          this.player.moveByCellCoord(-1, 0, (cell) => cell.findObjectsByType('grass').length);
-        }
-      },
-      ArrowRight: (keydown) => {
-        if (keydown) {
-          this.player.moveByCellCoord(1, 0, (cell) => cell.findObjectsByType('grass').length);
-        }
-      },
-    });
+    const keyHandlers = [
+      { key: 'ArrowUp', dcol: 0, drow: -1 },
+      { key: 'ArrowDown', dcol: 0, drow: 1 },
+      { key: 'ArrowLeft', dcol: -1, drow: 0 },
+      { key: 'ArrowRight', dcol: 1, drow: 0 },
+    ];
+
+    const playerMoveTo = (payload) => {
+      const {
+        player, dcol, drow, objectByType,
+      } = payload;
+      // eslint-disable-next-line max-len
+      return player.moveByCellCoord(dcol, drow, (cell) => cell.findObjectsByType(objectByType).length);
+    };
+
+    // eslint-disable-next-line array-callback-return
+    const res = keyHandlers.reduce((acc, cur) => {
+      const { dcol, drow, key } = cur;
+      const { player } = this;
+      const obj = {};
+
+      acc.push(
+        Object.assign(obj, obj[key] = (keydown) => {
+          if (keydown) {
+            playerMoveTo({
+              player, dcol, drow, objectByType: 'grass',
+            });
+          }
+        }),
+      );
+      return acc;
+    }, []);
+
+    this.engine.input.onKey(Object.assign({}, ...res));
   }
 
   /**

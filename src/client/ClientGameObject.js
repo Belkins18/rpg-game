@@ -7,7 +7,7 @@ class ClientGameObject extends MovableObject {
    * @param {string | {}} config.objCfg
    */
   constructor(config) {
-    console.log('config: ', config);
+    // console.log('config: ', config);
     super();
 
     const { x, y, width, height } = config.cell;
