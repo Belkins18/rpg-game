@@ -6,9 +6,10 @@ import levelConfig from '../configs/world';
 import gameObjects from '../configs/gameObjects';
 
 /**
- * @class
+ * @class ClientGame
+ * @param {Object} this
  */
-export default class ClientGame {
+class ClientGame {
   /**
    * @constructor
    * @param {string} config.tagId - id for canvas
@@ -41,7 +42,27 @@ export default class ClientGame {
   createEngine() {
     const $canvas = ClientGame.getCanvasElement(this.config.tagId);
 
-    return !$canvas ? new Error('canvas element is not defined!') : new ClientEngine($canvas);
+    return !$canvas ? new Error('canvas element is not defined!') : new ClientEngine($canvas, this);
+  }
+
+  /**
+   * createWorld
+   * @return {ClientWorld}
+   */
+  createWorld() {
+    return new ClientWorld({
+      game: this,
+      engine: this.engine,
+      levelConfig,
+    });
+  }
+
+  /**
+   * getWorld
+   * @return {ClientWorld}
+   */
+  getWorld() {
+    return this.world;
   }
 
   /**
@@ -54,6 +75,7 @@ export default class ClientGame {
         // eslint-disable-next-line no-unused-vars
         this.world.init();
         this.engine.on('render', (_, time) => {
+          this.engine.camera.focusAtGameObject(this.player);
           this.world.render(time);
         });
         this.engine.start();
@@ -98,18 +120,6 @@ export default class ClientGame {
   }
 
   /**
-   * createWorld
-   * @return {ClientWorld}
-   */
-  createWorld() {
-    return new ClientWorld({
-      game: this,
-      engine: this.engine,
-      levelConfig,
-    });
-  }
-
-  /**
    * get canvas element
    * @return {HTMLCanvasElement}
    */
@@ -125,3 +135,5 @@ export default class ClientGame {
     this.player = player;
   }
 }
+
+export default ClientGame;

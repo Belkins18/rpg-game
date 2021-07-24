@@ -9,12 +9,15 @@ import ClientInput from './ClientInput';
  */
 class ClientEngine {
   /**
+   *Creates an instance of ClientEngine.
    * @constructor
-   * @param {HTMLCanvasElement} canvas The canvas dom element.canvas
+   * @param {HTMLCanvasElement} canvas
+   * @param {ClientGame} game
    */
-  constructor(canvas) {
+  constructor(canvas, game) {
     Object.assign(this, {
       canvas,
+      game,
       ctx: null,
       imageLoaders: [],
       sprites: {},
@@ -115,11 +118,23 @@ class ClientEngine {
     const spriteCfg = this.sprites[sprite[0]][sprite[1]];
     const [fx, fy, fw, fh] = spriteCfg.frames[frame];
     const img = this.images[spriteCfg.img];
+    const { camera } = this;
 
-    this.ctx.drawImage(img, fx, fy, fw, fh, x, y, w, h);
+    this.ctx.drawImage(img, fx, fy, fw, fh, x - camera.x, y - camera.y, w, h);
   }
 }
 
 Object.assign(ClientEngine.prototype, EventSourceMixin);
 
 export default ClientEngine;
+
+/**
+ * @typedef ClientEngineConstructor
+ * @property {HTMLCanvasElement} canvas
+ * @property {CanvasRenderingContext2D} ctx
+ * @property {array} imageLoaders
+ * @property {{}} sprites
+ * @property {{}} images
+ * @property {ClientCamera} camera
+ * @property {ClientInput} input
+ */
