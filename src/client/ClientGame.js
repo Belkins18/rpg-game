@@ -86,36 +86,43 @@ class ClientGame {
     }
   }
 
-  initKeys() {
-    /**
-     * movePlayerToDir
-     * @param {string} direction
-     * @return {void}
-     */
-    const movePlayerToDir = (direction) => {
-      const keyHandlers = {
-        up: { dcol: 0, drow: -1 },
-        down: { dcol: 0, drow: 1 },
-        left: { dcol: -1, drow: 0 },
-        right: { dcol: 1, drow: 0 },
-      };
-
-      const { player } = this;
-
-      if (player) {
-        player.moveByCellCoord(
-          keyHandlers[direction].dcol,
-          keyHandlers[direction].drow,
-          (cell) => cell.findObjectsByType('grass').length,
-        );
-      }
+  /**
+   * movePlayerToDir
+   * @param {string} direction
+   * @return {void}
+   */
+  movePlayerToDir(direction) {
+    const keyHandlers = {
+      up: { dcol: 0, drow: -1 },
+      down: { dcol: 0, drow: 1 },
+      left: { dcol: -1, drow: 0 },
+      right: { dcol: 1, drow: 0 },
     };
 
+    const { player } = this;
+
+    if (player && player.motionProgress === 1) {
+      const canMovie = player.moveByCellCoord(
+        keyHandlers[direction].dcol,
+        keyHandlers[direction].drow,
+        (cell) => cell.findObjectsByType('grass').length,
+      );
+
+      if (canMovie) {
+        player.setState(direction);
+        player.once('motion-stopped', () => {
+          player.setState('main');
+        });
+      }
+    }
+  }
+
+  initKeys() {
     this.engine.input.onKey({
-      ArrowUp: (keydown) => keydown && movePlayerToDir('up'),
-      ArrowDown: (keydown) => keydown && movePlayerToDir('down'),
-      ArrowLeft: (keydown) => keydown && movePlayerToDir('left'),
-      ArrowRight: (keydown) => keydown && movePlayerToDir('right'),
+      ArrowUp: (keydown) => keydown && this.movePlayerToDir('up'),
+      ArrowDown: (keydown) => keydown && this.movePlayerToDir('down'),
+      ArrowLeft: (keydown) => keydown && this.movePlayerToDir('left'),
+      ArrowRight: (keydown) => keydown && this.movePlayerToDir('right'),
     });
   }
 
