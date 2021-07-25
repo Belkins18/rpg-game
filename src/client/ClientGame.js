@@ -75,8 +75,9 @@ class ClientGame {
         // eslint-disable-next-line no-unused-vars
         this.world.init();
         this.engine.on('render', (_, time) => {
-          this.engine.camera.focusAtGameObject(this.player);
+          // eslint-disable-next-line no-unused-expressions
           this.world.render(time);
+          this.engine.camera.focusAtGameObject(this.player);
         });
         this.engine.start();
         this.initKeys();
@@ -135,7 +136,7 @@ class ClientGame {
   }
 
   /**
-   * setPlater
+   * setPlayer
    * @return {HTMLCanvasElement}
    */
   setPlayer(player) {

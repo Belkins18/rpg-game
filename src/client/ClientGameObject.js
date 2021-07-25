@@ -10,7 +10,6 @@ class ClientGameObject extends MovableObject {
   constructor(config) {
     // console.log('config: ', config);
     super();
-
     const { x, y, width, height } = config.cell;
 
     const { world } = config.cell;
@@ -87,7 +86,8 @@ class ClientGameObject extends MovableObject {
     const state = this.spriteCfg.states[this.state];
     const lengthFrames = state.frames.length;
     const animate = animateEx(lengthFrames, this.anitionStartTime, time, state.duration, true);
-    const frame = Math.floor(lengthFrames + animate.offset) % lengthFrames;
+    // eslint-disable-next-line no-bitwise
+    const frame = ((lengthFrames + animate.offset) | 0) % lengthFrames;
 
     return state.frames[frame];
   }
