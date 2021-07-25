@@ -1,4 +1,5 @@
 import MovableObject from '../common/MovableObject';
+import { animateEx } from '../common/util';
 
 class ClientGameObject extends MovableObject {
   /**
@@ -9,7 +10,6 @@ class ClientGameObject extends MovableObject {
   constructor(config) {
     // console.log('config: ', config);
     super();
-
     const { x, y, width, height } = config.cell;
 
     const { world } = config.cell;
@@ -32,6 +32,8 @@ class ClientGameObject extends MovableObject {
         objectConfig: objCfg,
         type: objCfg.type,
         world,
+        state: 'main',
+        anitionStartTime: 0,
       },
       config,
     );
@@ -39,14 +41,17 @@ class ClientGameObject extends MovableObject {
 
   moveByCellCoord(dcol, drow, conditionCallback = null) {
     const { cell } = this;
-    this.moveToCellCoord(cell.cellCol + dcol, cell.cellRow + drow, conditionCallback);
+    return this.moveToCellCoord(cell.cellCol + dcol, cell.cellRow + drow, conditionCallback);
   }
 
   moveToCellCoord(dcol, drow, conditionCallback = null) {
     const { world } = this;
     const newCell = world.cellAt(dcol, drow);
-
-    if (!conditionCallback || conditionCallback(newCell)) this.setCell(newCell);
+    const canMovie = !conditionCallback || conditionCallback(newCell);
+    if (canMovie) {
+      this.setCell(newCell);
+    }
+    return canMovie;
   }
 
   setCell(newCell) {
@@ -55,14 +60,36 @@ class ClientGameObject extends MovableObject {
       this.cell = newCell;
       newCell.addGameObject(this);
 
-      const { x, y, width, height } = newCell;
-      Object.assign(this, {
-        x,
-        y,
-        width,
-        height,
-      });
+      this.moveTo(newCell.x, newCell.y, true, 200);
+
+      // const {
+      //   x, y, width, height,
+      // } = newCell;
+      // Object.assign(this, {
+      //   x,
+      //   y,
+      //   width,
+      //   height,
+      // });
     }
+  }
+
+  setState(state) {
+    this.state = state;
+
+    if (this.world) {
+      this.anitionStartTime = this.world.engine.lastRenderTime;
+    }
+  }
+
+  getCurrentFrame(time) {
+    const state = this.spriteCfg.states[this.state];
+    const lengthFrames = state.frames.length;
+    const animate = animateEx(lengthFrames, this.anitionStartTime, time, state.duration, true);
+    // eslint-disable-next-line no-bitwise
+    const frame = ((lengthFrames + animate.offset) | 0) % lengthFrames;
+
+    return state.frames[frame];
   }
 
   render(time) {
@@ -71,9 +98,9 @@ class ClientGameObject extends MovableObject {
     const { x, y, width, height, world } = this;
     const { engine } = world;
 
-    const { sprite, frame, states } = this.spriteCfg;
-
-    const spriteFrame = states ? states.main.frames[0] : frame;
+    // eslint-disable-next-line no-unused-vars
+    const { sprite, frame, states, type } = this.spriteCfg;
+    const spriteFrame = type === 'static' ? frame : this.getCurrentFrame(time);
 
     engine.renderSpriteFrame({
       sprite,

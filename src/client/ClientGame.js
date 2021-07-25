@@ -6,9 +6,10 @@ import levelConfig from '../configs/world';
 import gameObjects from '../configs/gameObjects';
 
 /**
- * @class
+ * @class ClientGame
+ * @param {Object} this
  */
-export default class ClientGame {
+class ClientGame {
   /**
    * @constructor
    * @param {string} config.tagId - id for canvas
@@ -41,64 +42,7 @@ export default class ClientGame {
   createEngine() {
     const $canvas = ClientGame.getCanvasElement(this.config.tagId);
 
-    return !$canvas ? new Error('canvas element is not defined!') : new ClientEngine($canvas);
-  }
-
-  /**
-   * initEngine
-   * @return {void | Error}
-   */
-  initEngine() {
-    if (this.engine instanceof ClientEngine) {
-      this.engine.loadSprites(sprites).then(() => {
-        // eslint-disable-next-line no-unused-vars
-        this.world.init();
-        this.engine.on('render', (_, time) => {
-          this.world.render(time);
-        });
-        this.engine.start();
-        this.initKeys();
-      });
-    } else {
-      throw new Error(this.engine);
-    }
-  }
-
-  initKeys() {
-    const keyHandlers = [
-      { key: 'ArrowUp', dcol: 0, drow: -1 },
-      { key: 'ArrowDown', dcol: 0, drow: 1 },
-      { key: 'ArrowLeft', dcol: -1, drow: 0 },
-      { key: 'ArrowRight', dcol: 1, drow: 0 },
-    ];
-
-    const playerMoveTo = (payload) => {
-      const {
-        player, dcol, drow, objectByType,
-      } = payload;
-      // eslint-disable-next-line max-len
-      return player.moveByCellCoord(dcol, drow, (cell) => cell.findObjectsByType(objectByType).length);
-    };
-
-    // eslint-disable-next-line array-callback-return
-    const res = keyHandlers.reduce((acc, cur) => {
-      const { dcol, drow, key } = cur;
-      const { player } = this;
-      const obj = {};
-
-      acc.push(
-        Object.assign(obj, obj[key] = (keydown) => {
-          if (keydown) {
-            playerMoveTo({
-              player, dcol, drow, objectByType: 'grass',
-            });
-          }
-        }),
-      );
-      return acc;
-    }, []);
-
-    this.engine.input.onKey(Object.assign({}, ...res));
+    return !$canvas ? new Error('canvas element is not defined!') : new ClientEngine($canvas, this);
   }
 
   /**
@@ -114,6 +58,76 @@ export default class ClientGame {
   }
 
   /**
+   * getWorld
+   * @return {ClientWorld}
+   */
+  getWorld() {
+    return this.world;
+  }
+
+  /**
+   * initEngine
+   * @return {void | Error}
+   */
+  initEngine() {
+    if (this.engine instanceof ClientEngine) {
+      this.engine.loadSprites(sprites).then(() => {
+        // eslint-disable-next-line no-unused-vars
+        this.world.init();
+        this.engine.on('render', (_, time) => {
+          // eslint-disable-next-line no-unused-expressions
+          this.world.render(time);
+          this.engine.camera.focusAtGameObject(this.player);
+        });
+        this.engine.start();
+        this.initKeys();
+      });
+    } else {
+      throw new Error(this.engine);
+    }
+  }
+
+  /**
+   * movePlayerToDir
+   * @param {string} direction
+   * @return {void}
+   */
+  movePlayerToDir(direction) {
+    const keyHandlers = {
+      up: { dcol: 0, drow: -1 },
+      down: { dcol: 0, drow: 1 },
+      left: { dcol: -1, drow: 0 },
+      right: { dcol: 1, drow: 0 },
+    };
+
+    const { player } = this;
+
+    if (player && player.motionProgress === 1) {
+      const canMovie = player.moveByCellCoord(
+        keyHandlers[direction].dcol,
+        keyHandlers[direction].drow,
+        (cell) => cell.findObjectsByType('grass').length,
+      );
+
+      if (canMovie) {
+        player.setState(direction);
+        player.once('motion-stopped', () => {
+          player.setState('main');
+        });
+      }
+    }
+  }
+
+  initKeys() {
+    this.engine.input.onKey({
+      ArrowUp: (keydown) => keydown && this.movePlayerToDir('up'),
+      ArrowDown: (keydown) => keydown && this.movePlayerToDir('down'),
+      ArrowLeft: (keydown) => keydown && this.movePlayerToDir('left'),
+      ArrowRight: (keydown) => keydown && this.movePlayerToDir('right'),
+    });
+  }
+
+  /**
    * get canvas element
    * @return {HTMLCanvasElement}
    */
@@ -122,10 +136,12 @@ export default class ClientGame {
   }
 
   /**
-   * setPlater
+   * setPlayer
    * @return {HTMLCanvasElement}
    */
   setPlayer(player) {
     this.player = player;
   }
 }
+
+export default ClientGame;

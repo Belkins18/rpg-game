@@ -39,7 +39,12 @@ class PositionedObject {
 
   worldBounds() {
     const { x, y, width, height } = this;
-    return { x, y, width, height };
+    return {
+      x,
+      y,
+      width,
+      height,
+    };
   }
 
   /**

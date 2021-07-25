@@ -38,7 +38,7 @@ module.exports = {
       [['grass']],
       [['grass']],
       [['grass']],
-      [['grass', { type: 'boy1', player: true }]],
+      [['grass'], [], [{ type: 'boy1', player: true }]],
       [['grass']],
       [['grass']],
       [['grass']],
