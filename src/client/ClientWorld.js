@@ -62,10 +62,30 @@ export default class ClientWorld extends PositionedObject {
     const { levelConfig, map, worldHeight, worldWidth } = this;
 
     for (let layerId = 0; layerId < levelConfig.layers.length; layerId++) {
-      for (let row = 0; row < worldHeight; row++) {
-        for (let col = 0; col < worldWidth; col++) {
-          map[row][col].render(time, layerId);
-        }
+      const layer = levelConfig.layers[layerId];
+
+      if (layer.isStatic) {
+
+      } else {
+        this.renderDynamicLayer(time, layerId);
+      }
+    }
+  }
+
+  renderStaticLayer(time, layer, layerId) {
+    const {engine} = this;
+    const {camera} = engine;
+
+    const layerName = 'static_layer_' + layerId;
+    const cameraPos = camera.worldBounds();
+  }
+
+  renderDynamicLayer(time, layerId) {
+    const { map, worldHeight, worldWidth } = this;
+
+    for (let row = 0; row < worldHeight; row++) {
+      for (let col = 0; col < worldWidth; col++) {
+        map[row][col].render(time, layerId);
       }
     }
   }
