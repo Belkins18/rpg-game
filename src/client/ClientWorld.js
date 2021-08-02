@@ -59,11 +59,13 @@ export default class ClientWorld extends PositionedObject {
   }
 
   render(time) {
-    const { map, worldHeight, worldWidth } = this;
+    const { levelConfig, map, worldHeight, worldWidth } = this;
 
-    for (let row = 0; row < worldHeight; row++) {
-      for (let col = 0; col < worldWidth; col++) {
-        map[row][col].render(time);
+    for (let layerId = 0; layerId < levelConfig.layers.length; layerId++) {
+      for (let row = 0; row < worldHeight; row++) {
+        for (let col = 0; col < worldWidth; col++) {
+          map[row][col].render(time, layerId);
+        }
       }
     }
   }
